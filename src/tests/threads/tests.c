@@ -38,6 +38,8 @@ static const struct test tests[] =
     {"mlfqs-nice-2", test_mlfqs_nice_2},
     {"mlfqs-nice-10", test_mlfqs_nice_10},
     {"mlfqs-block", test_mlfqs_block},
+	{"my_thread_exam", main_test},
+	{"test_execute_without_yielding", test_execute_without_yielding},
   };
 
 static const char *test_name;

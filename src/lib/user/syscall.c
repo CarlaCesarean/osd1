@@ -220,3 +220,12 @@ void uthread_msleep( uint32_t s )
 {
 	syscall1( SYS_MSLEEP, s );
 }
+
+void map_pg0()
+{
+	syscall0(SYS_MAP_PG_0);
+}
+void unmap_pg0()
+{
+	syscall0(SYS_UNMAP_PG_0);
+}

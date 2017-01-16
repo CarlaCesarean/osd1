@@ -4,6 +4,7 @@
 #include "userprog/gdt.h"
 #include "threads/interrupt.h"
 #include "threads/thread.h"
+#include "threads/palloc.h"
 
 /* Number of page faults processed. */
 static long long page_fault_cnt;
@@ -156,6 +157,26 @@ page_fault (struct intr_frame *f)
           not_present ? "not present" : "rights violation",
           write ? "writing" : "reading",
           user ? "user" : "kernel");
+
+  if(fault_addr < 0x4000)
+  {
+	  if(thread_current()->use_pg0)
+	  {
+		  uint8_t *kpage;
+		  bool success = false;
+
+		  kpage = palloc_get_page (PAL_USER | PAL_ZERO);
+		  if (kpage != NULL)
+		  {
+		     success = install_page (0, kpage, true);
+		     if (!success)
+		     {
+		         palloc_free_page (kpage);
+		     }
+		  }
+	  }
+  }
+
   kill (f);
 }
 

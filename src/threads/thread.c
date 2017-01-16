@@ -183,7 +183,7 @@ thread_create (const char *name, int priority,
   /* Initialize thread. */
   init_thread (t, name, priority);
   tid = t->tid = allocate_tid ();
-
+  printf("Thread [tid = %d] is being created\n", tid);
   /* Prepare thread for first run by initializing its stack.
      Do this atomically so intermediate values for the 'stack' 
      member cannot be observed. */
@@ -289,7 +289,6 @@ void
 thread_exit (void) 
 {
   ASSERT (!intr_context ());
-
 #ifdef USERPROG
   process_exit ();
 #endif
@@ -297,6 +296,8 @@ thread_exit (void)
   /* Remove thread from all threads list, set our status to dying,
      and schedule another process.  That process will destroy us
      when it calls thread_schedule_tail(). */
+  printf("Thread [tid = %d] yields %d times\n", thread_current()->tid, thread_current()->times_yielded);
+
   intr_disable ();
   list_remove (&thread_current()->allelem);
   thread_current ()->status = THREAD_DYING;
@@ -318,6 +319,7 @@ thread_yield (void)
   if (cur != idle_thread) 
     list_push_back (&ready_list, &cur->elem);
   cur->status = THREAD_READY;
+  cur->times_yielded++;
   schedule ();
   intr_set_level (old_level);
 }
@@ -469,6 +471,8 @@ init_thread (struct thread *t, const char *name, int priority)
   t->stack = (uint8_t *) t + PGSIZE;
   t->priority = priority;
   t->magic = THREAD_MAGIC;
+  t->times_yielded = 0;
+  t->use_pg0 = false;
   list_push_back (&all_list, &t->allelem);
 }
 
@@ -572,11 +576,11 @@ schedule (void)
 static tid_t
 allocate_tid (void) 
 {
-  static tid_t next_tid = 1;
+  static tid_t next_tid = INT32_MAX;
   tid_t tid;
 
   lock_acquire (&tid_lock);
-  tid = next_tid++;
+  tid = next_tid--;
   lock_release (&tid_lock);
 
   return tid;
