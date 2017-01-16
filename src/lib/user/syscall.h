@@ -54,8 +54,6 @@ void uthread_exit(int);
 int uthread_getpid(void);
 int uthread_gettid(void);
 void uthread_msleep( uint32_t);
-void map_pg0();
-void unmap_pg0();
 
 
 #endif /* lib/user/syscall.h */

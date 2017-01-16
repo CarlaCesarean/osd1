@@ -88,9 +88,6 @@ struct thread
     char name[16];                      /* Name (for debugging purposes). */
     uint8_t *stack;                     /* Saved stack pointer. */
     int priority;                       /* Priority. */
-
-    int times_yielded;
-
     struct list_elem allelem;           /* List element for all threads list. */
 
     /* Shared between thread.c and synch.c. */
@@ -101,7 +98,6 @@ struct thread
     uint32_t *pagedir;                  /* Page directory. */
 #endif
 
-    bool use_pg0;
     /* Owned by thread.c. */
     unsigned magic;                     /* Detects stack overflow. */
   };

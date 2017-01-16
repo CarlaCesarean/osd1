@@ -39,9 +39,7 @@ enum
     SYS_UTHREAD_JOIN,			/* join a thread in the same process */
     SYS_UTHREAD_JOINALL,
     SYS_UTHREAD_EXIT,			/* exit e thread in a process */
-    SYS_MSLEEP,
-	SYS_MAP_PG_0,
-	SYS_UNMAP_PG_0,
+    SYS_MSLEEP
   };
 
 #endif /* lib/syscall-nr.h */

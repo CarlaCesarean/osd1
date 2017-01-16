@@ -32,8 +32,6 @@ extern test_func test_mlfqs_fair_20;
 extern test_func test_mlfqs_nice_2;
 extern test_func test_mlfqs_nice_10;
 extern test_func test_mlfqs_block;
-extern test_func main_test;
-extern test_func test_execute_without_yielding;
 
 void msg (const char *, ...);
 void fail (const char *, ...);
